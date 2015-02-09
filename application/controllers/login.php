@@ -2,7 +2,7 @@
 /**
  * Login Class
  *
- * @author	Awan Pribadi Basuki <awan_pribadi@yahoo.com>
+ * @author	Mujibur Rochman<mujib.programmer@gmail.com>
  */
 class Login extends CI_Controller {
 	/**
@@ -22,7 +22,7 @@ class Login extends CI_Controller {
 	{
 		if ($this->session->userdata('login') == TRUE)
 		{
-			redirect('absen');
+			redirect('attendance');
 		}
 		else
 		{
@@ -51,7 +51,7 @@ class Login extends CI_Controller {
 			}
 			else
 			{
-				$this->session->set_flashdata('message', 'Maaf, username dan atau password Anda salah');
+				$this->session->set_flashdata('message', 'Sorry, Your username and or password are wrong');
 				redirect('login/index');
 			}
 		}

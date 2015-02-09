@@ -2,7 +2,7 @@
 /**
  * Rekap_model Class
  *
- * @author	Awan Pribadi Basuki <awan_pribadi@yahoo.com>
+ * @author	Mujibur Rochman<mujib.programmer@gmail.com>
  */
 class Rekap_model extends CI_Model {
 	/**
