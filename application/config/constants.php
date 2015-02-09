@@ -36,6 +36,21 @@ define('FOPEN_READ_WRITE_CREATE',				'a+b');
 define('FOPEN_WRITE_CREATE_STRICT',				'xb');
 define('FOPEN_READ_WRITE_CREATE_STRICT',		'x+b');
 
+/*
+|--------------------------------------------------------------------------
+| Table on Database
+|--------------------------------------------------------------------------
+|
+| these constant are used to mapping constant with table name
+|
+*/
+
+define('TABLE_ATTENDANCE', 'attendance');
+define('TABLE_GRADE', 'grade');
+define('TABLE_SEMESTER', 'semester');
+define('TABLE_STUDENT', 'student');
+define('TABLE_USER', 'user');
+
 
 /* End of file constants.php */
 /* Location: ./application/config/constants.php */
