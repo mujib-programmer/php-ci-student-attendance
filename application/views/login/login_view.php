@@ -11,7 +11,7 @@
 <body>
 <div id="login_box">
 	
-	<h1>Login Absensi</h1>
+	<h1>Login Absensi</h1>        
 	
 	<?php
 		$attributes = array('name' => 'login_form', 'id' => 'login_form');
@@ -38,7 +38,8 @@
 		<p>
 			<input type="submit" name="submit" id="submit" value="Login" />
 		</p>
-	</form>
+	</form
+        
 </div>
 </body>
 </html>
