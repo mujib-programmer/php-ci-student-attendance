@@ -95,5 +95,5 @@ class Semester_model extends CI_Model {
 }
 // END Semester_model Class
 
-/* End of file absen_model.php */
+/* End of file attendance_model.php */
 /* Location: ./system/application/models/semester_model.php */

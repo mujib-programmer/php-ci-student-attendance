@@ -36,4 +36,4 @@ class Login_model extends CI_Model {
 // END Login_model Class
 
 /* End of file login_model.php */ 
-/* Location: ./system/application/model/login_model.php */
+/* Location: ./application/model/login_model.php */

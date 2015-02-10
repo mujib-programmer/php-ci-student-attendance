@@ -11,10 +11,10 @@ class Report extends CI_Controller {
 	function Report()
 	{
 		parent::__construct();
-		$this->load->model('Rekap_model', '', TRUE);
+		$this->load->model('Report_model', '', TRUE);
 		$this->load->model('Semester_model', '', TRUE);
-		$this->load->model('Siswa_model', '', TRUE);
-		$this->load->model('Kelas_model', '', TRUE);
+		$this->load->model('Student_model', '', TRUE);
+		$this->load->model('Grade_model', '', TRUE);
 		
 		// Load to_excel_pi plugins
 		$this->load->helper('to_excel');
@@ -49,7 +49,7 @@ class Report extends CI_Controller {
 		$data['form_action'] = site_url('report/get_report');
 				
 		// data kelas untuk dropdown menu
-		$query_kelas = $this->Kelas_model->get_kelas();
+		$query_kelas = $this->Grade_model->get_kelas();
 		$kelas = $query_kelas->result();
 		$num_rows = $query_kelas->num_rows();
 		
@@ -86,7 +86,7 @@ class Report extends CI_Controller {
 		$data['form_action'] = site_url('report/get_report');
 		
 		// data kelas untuk dropdown menu
-		$kelas = $this->Kelas_model->get_kelas()->result();
+		$kelas = $this->Grade_model->get_kelas()->result();
 		foreach($kelas as $row)
 		{
 			$data['options_kelas'][$row->id_kelas] = $row->kelas;
@@ -99,15 +99,15 @@ class Report extends CI_Controller {
 		if ( ! ($id_semester == 0) && ! ($id_kelas == 0))
 		{
 			// data kelas, untuk kelas terpilih
-			$kls = $this->Kelas_model->get_kelas_by_id($id_kelas);
+			$kls = $this->Grade_model->get_kelas_by_id($id_kelas);
 			$data['active_class'] = $kls->kelas;
 			
 			// semester yang dipilih
 			$data['semester'] = $id_semester;
 		
 			// load data from database
-			$attendance 		= $this->Rekap_model->get_report($id_semester, $id_kelas)->result();
-			$num_rows 	= $this->Rekap_model->get_report($id_semester, $id_kelas)->num_rows();
+			$attendance 		= $this->Report_model->get_report($id_semester, $id_kelas)->result();
+			$num_rows 	= $this->Report_model->get_report($id_semester, $id_kelas)->num_rows();
 			
 			// jika query > 0
 			if ($num_rows > 0)
@@ -205,7 +205,7 @@ class Report extends CI_Controller {
 	function download($id_semester, $id_kelas)
 	{
 		$file_name = 'report';
-		$query = $this->Rekap_model->get_report($id_semester, $id_kelas);
+		$query = $this->Report_model->get_report($id_semester, $id_kelas);
 		to_excel($query, $file_name);
 	}
 }

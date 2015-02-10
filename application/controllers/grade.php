@@ -11,7 +11,7 @@ class Grade extends CI_Controller {
 	function Grade()
 	{
 		parent::__construct();
-		$this->load->model('Kelas_model', '', TRUE);
+		$this->load->model('Grade_model', '', TRUE);
 	}
 	
 	/**
@@ -45,7 +45,7 @@ class Grade extends CI_Controller {
 		$data['main_view'] = 'grade/grade';
 		
 		// Load data
-		$query = $this->Kelas_model->get_all();
+		$query = $this->Grade_model->get_all();
 		$grade = $query->result();
 		$num_rows = $query->num_rows();
 		
@@ -90,7 +90,7 @@ class Grade extends CI_Controller {
 	 */
 	function delete($id_grade)
 	{
-		$this->Kelas_model->delete($id_grade);
+		$this->Grade_model->delete($id_grade);
 		$this->session->set_flashdata('message', '1 grade data successfully deleted');
 		
 		redirect('grade');
@@ -135,7 +135,7 @@ class Grade extends CI_Controller {
 							'grade'		=> $this->input->post('grade')
 						);
 			// Proses penyimpanan data di table grade
-			$this->Kelas_model->add($grade);
+			$this->Grade_model->add($grade);
 			
 			$this->session->set_flashdata('message', '1 grade data successfully added!');
 			redirect('grade/add');
@@ -160,7 +160,7 @@ class Grade extends CI_Controller {
 										);
 	
 		// cari data dari database
-		$grade = $this->Kelas_model->get_grade_by_id($id_grade);
+		$grade = $this->Grade_model->get_grade_by_id($id_grade);
 				
 		// buat session untuk menyimpan data primary key (id_grade)
 		$this->session->set_userdata('id_grade', $grade->id_grade);
@@ -194,7 +194,7 @@ class Grade extends CI_Controller {
 			$grade = array('id_grade'	=> $this->input->post('id_grade'),
 							'grade'		=> $this->input->post('grade')
 						);
-			$this->Kelas_model->update($this->session->userdata('id_grade'), $grade);
+			$this->Grade_model->update($this->session->userdata('id_grade'), $grade);
 			
 			$this->session->set_flashdata('message', '1 grade data successfully updated!');
 			redirect('grade');
@@ -210,7 +210,7 @@ class Grade extends CI_Controller {
 	 */
 	function valid_id($id_grade)
 	{
-		if ($this->Kelas_model->valid_id($id_grade) == TRUE)
+		if ($this->Grade_model->valid_id($id_grade) == TRUE)
 		{
 			$this->form_validation->set_message('valid_id', "grade with code $id_grade already in registered");
 			return FALSE;
@@ -237,7 +237,7 @@ class Grade extends CI_Controller {
 		}
 		else
 		{
-			if($this->Kelas_model->valid_id($new_id) === TRUE) // cek database untuk entry yang sama memakai valid_entry()
+			if($this->Grade_model->valid_id($new_id) === TRUE) // cek database untuk entry yang sama memakai valid_entry()
 			{
 				$this->form_validation->set_message('valid_id2', "grade with code $id_grade already in registered");
 				return FALSE;

@@ -11,9 +11,9 @@ class Attendance extends CI_Controller {
 	function Attendance()
 	{
 		parent::__construct();
-		$this->load->model('Absen_model', '', TRUE);
+		$this->load->model('Attendance_model', '', TRUE);
 		$this->load->model('Semester_model', '', TRUE);
-		$this->load->model('Siswa_model', '', TRUE);
+		$this->load->model('Student_model', '', TRUE);
 	}
 	
 	/**
@@ -56,8 +56,8 @@ class Attendance extends CI_Controller {
 		$offset = $this->uri->segment($uri_segment);
 		
 		// Load data dari tabel absen
-		$absens = $this->Absen_model->get_last_ten_absen($this->limit, $offset)->result();
-		$num_rows = $this->Absen_model->count_all_num_rows();
+		$absens = $this->Attendance_model->get_last_ten_absen($this->limit, $offset)->result();
+		$num_rows = $this->Attendance_model->count_all_num_rows();
 		
 		if ($num_rows > 0) // Jika query menghasilkan data
 		{
@@ -116,7 +116,7 @@ class Attendance extends CI_Controller {
 	 */
 	function delete($id_absen)
 	{
-		$this->Absen_model->delete($id_absen);
+		$this->Attendance_model->delete($id_absen);
 		$this->session->set_flashdata('message', '1 data absen berhasil dihapus');
 		
 		redirect('absen');
@@ -165,7 +165,7 @@ class Attendance extends CI_Controller {
 							'absen' 		=> $this->input->post('absen')
 						);
 			// Proses simpan data absensi
-			$this->Absen_model->add($absen);
+			$this->Attendance_model->add($absen);
 			
 			$this->session->set_flashdata('message', 'Satu data absen berhasil disimpan!');
 			redirect('absen/add');
@@ -190,7 +190,7 @@ class Attendance extends CI_Controller {
 										);
 		
 		// cari data dari database
-		$absen = $this->Absen_model->get_absen_by_id($id_absen)->row();
+		$absen = $this->Attendance_model->get_absen_by_id($id_absen)->row();
 		
 		// buat session untuk menyimpan data primary key (id_absen)
 		$this->session->set_userdata('id_absen', $absen->id_absen);
@@ -238,7 +238,7 @@ class Attendance extends CI_Controller {
 							'tanggal'		=> date('Y-m-d', strtotime($this->input->post('tanggal'))),
 							'absen' 		=> $this->input->post('absen')
 						);
-			$this->Absen_model->update($this->session->userdata('id_absen'), $absen);
+			$this->Attendance_model->update($this->session->userdata('id_absen'), $absen);
 						
 			// set pesan
 			$this->session->set_flashdata('message', 'Satu data absen berhasil diupdate!');
@@ -257,7 +257,7 @@ class Attendance extends CI_Controller {
 	 */
 	function valid_nis($nis)
 	{
-		if ($this->Siswa_model->valid_nis($nis) == TRUE)
+		if ($this->Student_model->valid_nis($nis) == TRUE)
 		{
 			return TRUE;
 		}
@@ -292,7 +292,7 @@ class Attendance extends CI_Controller {
 		$nis 		= $this->input->post('nis');
 		$tanggal	= date('Y-m-d', strtotime($this->input->post('tanggal')));
 		
-		if($this->Absen_model->valid_entry($nis, $tanggal) == FALSE)
+		if($this->Attendance_model->valid_entry($nis, $tanggal) == FALSE)
 		{
 			$this->form_validation->set_message('valid_entry', 'Siswa ini sudah tercatat absen pada tanggal ' . $this->input->post('tanggal'));
 			return FALSE;
@@ -318,7 +318,7 @@ class Attendance extends CI_Controller {
 		}
 		else
 		{
-			if($this->Absen_model->valid_entry($nis, $new_date) === FALSE) // cek database untuk entry yang sama memakai valid_entry()
+			if($this->Attendance_model->valid_entry($nis, $new_date) === FALSE) // cek database untuk entry yang sama memakai valid_entry()
 			{
 				$this->form_validation->set_message('valid_entry2', 'Siswa ini sudah tercatat absen pada tanggal ' . $this->input->post('tanggal'));
 				return FALSE;

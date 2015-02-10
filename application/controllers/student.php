@@ -6,13 +6,13 @@
  */
 class Student extends CI_Controller {
 	/**
-	 * Constructor, load Semester_model, Kelas_model
+	 * Constructor, load Semester_model, Grade_model
 	 */
 	function Siswa()
 	{
 		parent::__construct();
-		$this->load->model('Siswa_model', '', TRUE);
-		$this->load->model('Kelas_model', '', TRUE);
+		$this->load->model('Student_model', '', TRUE);
+		$this->load->model('Grade_model', '', TRUE);
 	}
 	
 	/**
@@ -52,8 +52,8 @@ class Student extends CI_Controller {
 		$offset = $this->uri->segment($uri_segment);
 		
 		// Load data
-		$student = $this->Siswa_model->get_all($this->limit, $offset);
-		$num_rows = $this->Siswa_model->count_all();
+		$student = $this->Student_model->get_all($this->limit, $offset);
+		$num_rows = $this->Student_model->count_all();
 		
 		if ($num_rows > 0)
 		{
@@ -104,7 +104,7 @@ class Student extends CI_Controller {
 	 */
 	function delete($nis)
 	{
-		$this->Siswa_model->delete($nis);
+		$this->Student_model->delete($nis);
 		$this->session->set_flashdata('message', '1 attendance data successfully deleted');
 		
 		redirect('student');
@@ -123,7 +123,7 @@ class Student extends CI_Controller {
 										);
 										
 		// data kelas untuk dropdown menu
-		$kelas = $this->Kelas_model->get_kelas()->result();
+		$kelas = $this->Grade_model->get_kelas()->result();
 		foreach($kelas as $row)
 		{
 			$data['options_kelas'][$row->id_kelas] = $row->kelas;
@@ -144,7 +144,7 @@ class Student extends CI_Controller {
 										);
 										
 		// data kelas untuk dropdown menu
-		$kelas = $this->Kelas_model->get_kelas()->result();
+		$kelas = $this->Grade_model->get_kelas()->result();
 		foreach($kelas as $row)
 		{
 			$data['options_kelas'][$row->id_kelas] = $row->kelas;
@@ -162,7 +162,7 @@ class Student extends CI_Controller {
 							'nama'		=> $this->input->post('nama'),
 							'id_kelas'	=> $this->input->post('id_kelas')
 						);
-			$this->Siswa_model->add($student);
+			$this->Student_model->add($student);
 			
 			$this->session->set_flashdata('message', '1 student data succesfully added!');
 			redirect('student/add');
@@ -187,14 +187,14 @@ class Student extends CI_Controller {
 										);
 										
 		// data kelas untuk dropdown menu
-		$kelas = $this->Kelas_model->get_kelas()->result();
+		$kelas = $this->Grade_model->get_kelas()->result();
 		foreach($kelas as $row)
 		{
 			$data['options_kelas'][$row->id_kelas] = $row->kelas;
 		}
 		
 		// cari data dari database
-		$student = $this->Siswa_model->get_student_by_id($nis);
+		$student = $this->Student_model->get_student_by_id($nis);
 		
 		// buat session untuk menyimpan data primary key (nis)
 		$this->session->set_userdata('nis', $student->nis);
@@ -220,7 +220,7 @@ class Student extends CI_Controller {
 										);
 										
 		// data kelas untuk dropdown menu
-		$kelas = $this->Kelas_model->get_kelas()->result();
+		$kelas = $this->Grade_model->get_kelas()->result();
 		foreach($kelas as $row)
 		{
 			$data['options_kelas'][$row->id_kelas] = $row->kelas;
@@ -239,8 +239,8 @@ class Student extends CI_Controller {
 							'nama'		=> $this->input->post('nama'),
 							'id_kelas'	=> $this->input->post('id_kelas')
 						);
-			$this->Siswa_model->update($this->session->userdata('nis'), $absen);
-			// $this->Absen_model->update($id_absen, $absen);
+			$this->Student_model->update($this->session->userdata('nis'), $absen);
+			// $this->Attendance_model->update($id_absen, $absen);
 			
 			// set pesan
 			$this->session->set_flashdata('message', '1 student data successfully updated!');
@@ -259,7 +259,7 @@ class Student extends CI_Controller {
 	 */
 	function valid_nis($nis)
 	{
-		if ($this->Siswa_model->valid_nis($nis) == TRUE)
+		if ($this->Student_model->valid_nis($nis) == TRUE)
 		{
 			$this->form_validation->set_message('valid_nis', "student with NIS $nis already enrolled");
 			return FALSE;
@@ -283,7 +283,7 @@ class Student extends CI_Controller {
 		}
 		else
 		{
-			if($this->Siswa_model->valid_nis($new_nis) === TRUE) // cek database untuk entry yang sama memakai valid_entry()
+			if($this->Student_model->valid_nis($new_nis) === TRUE) // cek database untuk entry yang sama memakai valid_entry()
 			{
 				$this->form_validation->set_message('valid_nis2', "Student with nis $new_nis already enrolled");
 				return FALSE;
