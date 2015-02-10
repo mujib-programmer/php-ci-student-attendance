@@ -20,7 +20,7 @@ class Attendance extends CI_Controller {
 	 * Inisialisasi variabel untuk $limit dan $title(untuk id element <body>)
 	 */
 	var $limit = 10;
-	var $title = 'absen';
+	var $title = 'attendance';
 	
 	/**
 	 * Memeriksa user state, jika dalam keadaan login akan menampilkan halaman absen,
@@ -48,8 +48,8 @@ class Attendance extends CI_Controller {
 	function get_last_ten_absen($offset = 0)
 	{
 		$data['title'] = $this->title;
-		$data['h2_title'] = 'Absen';
-		$data['main_view'] = 'absen/absen';
+		$data['h2_title'] = 'Attendance';
+		$data['main_view'] = 'attendance/attendance';
 		
 		// Offset
 		$uri_segment = 3;
@@ -62,7 +62,7 @@ class Attendance extends CI_Controller {
 		if ($num_rows > 0) // Jika query menghasilkan data
 		{
 			// Membuat pagination			
-			$config['base_url'] = site_url('absen/get_last_ten_absen');
+			$config['base_url'] = site_url('attendance/get_last_ten_absen');
 			$config['total_rows'] = $num_rows;
 			$config['per_page'] = $this->limit;
 			$config['uri_segment'] = $uri_segment;
@@ -78,7 +78,7 @@ class Attendance extends CI_Controller {
 
 			// Set heading untuk tabel
 			$this->table->set_empty("&nbsp;");
-			$this->table->set_heading('No', 'Hari, Tanggal', 'No Induk', 'Nama', 'Kelas', 'Absen', 'Actions');
+			$this->table->set_heading('No', 'Day, Date', 'NIS', 'Name', 'Grade', 'Attendance', 'Actions');
 			
 			// Penomoran baris data
 			$i = 0 + $offset;
@@ -94,18 +94,18 @@ class Attendance extends CI_Controller {
 				
 				// Penyusunan data baris per baris, perhatikan pembuatan link untuk updat dan delete
 				$this->table->add_row(++$i, $hr_tgl, $absen->nis, $absen->nama, $absen->kelas, $absen->absen,
-										anchor('absen/update/'.$absen->id_absen,'update',array('class' => 'update')).' '.
-										anchor('absen/delete/'.$absen->id_absen,'hapus',array('class'=> 'delete','onclick'=>"return confirm('Anda yakin akan menghapus data ini?')"))
+										anchor('attendance/update/'.$absen->id_absen,'update',array('class' => 'update')).' '.
+										anchor('attendance/delete/'.$absen->id_absen,'delete',array('class'=> 'delete','onclick'=>"return confirm('Are you sure you want to delete this data?')"))
 									);
 			}
 			$data['table'] = $this->table->generate();
 		}
 		else
 		{
-			$data['message'] = 'Tidak ditemukan satupun data absensi!';
+			$data['message'] = 'None of attendance data founded!';
 		}		
 		
-		$data['link'] = array('link_add' => anchor('absen/add/','tambah data', array('class' => 'add')));
+		$data['link'] = array('link_add' => anchor('attendance/add/','add data', array('class' => 'add')));
 		
 		// Load default view
 		$this->load->view('template', $data);
@@ -117,9 +117,9 @@ class Attendance extends CI_Controller {
 	function delete($id_absen)
 	{
 		$this->Attendance_model->delete($id_absen);
-		$this->session->set_flashdata('message', '1 data absen berhasil dihapus');
+		$this->session->set_flashdata('message', '1 attendance data succesfully deleted');
 		
-		redirect('absen');
+		redirect('attendance');
 	}
 	
 	/**
@@ -128,10 +128,10 @@ class Attendance extends CI_Controller {
 	function add()
 	{		
 		$data['title'] 			= $this->title;
-		$data['h2_title'] 		= 'Absen > Tambah Data';
-		$data['main_view'] 		= 'absen/absen_form';
-		$data['form_action']	= site_url('absen/add_process');
-		$data['link'] 			= array('link_back' => anchor('absen/','kembali', array('class' => 'back')));
+		$data['h2_title'] 		= 'Attendance > Add Data';
+		$data['main_view'] 		= 'attendance/attendance_form';
+		$data['form_action']	= site_url('attendance/add_process');
+		$data['link'] 			= array('link_back' => anchor('attendance/','back', array('class' => 'back')));
 		$this->load->view('template', $data);
 	}
 	
@@ -142,15 +142,15 @@ class Attendance extends CI_Controller {
 	{
 		// Inisialisasi data umum
 		$data['title'] 			= $this->title;
-		$data['h2_title'] 		= 'Absen > Tambah Data';
-		$data['main_view'] 		= 'absen/absen_form';
-		$data['form_action']	= site_url('absen/add_process');
-		$data['link'] 			= array('link_back' => anchor('absen/','kembali', array('class' => 'back')));
+		$data['h2_title'] 		= 'Attendance > Add Data';
+		$data['main_view'] 		= 'attendance/attendance_form';
+		$data['form_action']	= site_url('attendance/add_process');
+		$data['link'] 			= array('link_back' => anchor('attendance/','back', array('class' => 'back')));
 		
 		// Set validation rules
 		$this->form_validation->set_rules('nis', 'NIS', 'required|exact_length[4]|callback_valid_nis');
-		$this->form_validation->set_rules('tanggal', 'Tanggal', 'required|callback_valid_date|callback_valid_entry');
-		$this->form_validation->set_rules('absen', 'Absen', 'required');
+		$this->form_validation->set_rules('tanggal', 'Date', 'required|callback_valid_date|callback_valid_entry');
+		$this->form_validation->set_rules('absen', 'Attendance', 'required');
 		
 		if ($this->form_validation->run() == TRUE)
 		{
@@ -167,8 +167,8 @@ class Attendance extends CI_Controller {
 			// Proses simpan data absensi
 			$this->Attendance_model->add($absen);
 			
-			$this->session->set_flashdata('message', 'Satu data absen berhasil disimpan!');
-			redirect('absen/add');
+			$this->session->set_flashdata('message', '1 attendance data successfully added!');
+			redirect('attendance/add');
 		}
 		else
 		{		
@@ -183,10 +183,10 @@ class Attendance extends CI_Controller {
 	{
 		// Inisialisasi data umum
 		$data['title'] 			= $this->title;
-		$data['h2_title'] 		= 'Absen > Update Data';
-		$data['main_view'] 		= 'absen/absen_form';
-		$data['form_action']	= site_url('absen/update_process');
-		$data['link'] 			= array('link_back' => anchor('absen/','kembali', array('class' => 'back'))
+		$data['h2_title'] 		= 'Attendance > Update Data';
+		$data['main_view'] 		= 'attendance/attendance_form';
+		$data['form_action']	= site_url('attendance/update_process');
+		$data['link'] 			= array('link_back' => anchor('attendance/','back', array('class' => 'back'))
 										);
 		
 		// cari data dari database
@@ -214,10 +214,10 @@ class Attendance extends CI_Controller {
 	{
 		// Inisialisasi data umum
 		$data['title'] 			= $this->title;
-		$data['h2_title'] 		= 'Absen > Update Data';
-		$data['main_view'] 		= 'absen/absen_form';
-		$data['form_action']	= site_url('absen/update_process');
-		$data['link'] 			= array('link_back' => anchor('absen/','kembali', array('class' => 'back'))
+		$data['h2_title'] 		= 'Attendance > Update Data';
+		$data['main_view'] 		= 'attendance/attendance_form';
+		$data['form_action']	= site_url('attendance/update_process');
+		$data['link'] 			= array('link_back' => anchor('attendance/','back', array('class' => 'back'))
 										);
 			
 		// Set validation rules
@@ -241,9 +241,9 @@ class Attendance extends CI_Controller {
 			$this->Attendance_model->update($this->session->userdata('id_absen'), $absen);
 						
 			// set pesan
-			$this->session->set_flashdata('message', 'Satu data absen berhasil diupdate!');
+			$this->session->set_flashdata('message', '1 attendance data successfully updated!');
 			
-			redirect('absen');
+			redirect('attendance');
 		}
 		else
 		{		
@@ -263,7 +263,7 @@ class Attendance extends CI_Controller {
 		}
 		else
 		{
-			$this->form_validation->set_message('valid_nis', "siswa dengan NIS $nis tidak terdaftar");
+			$this->form_validation->set_message('valid_nis', "Student with NIS $nis not yet registered");
 			return FALSE;
 		}
 	}
@@ -275,7 +275,7 @@ class Attendance extends CI_Controller {
 	{
 		if(!ereg("^(0[1-9]|1[0-9]|2[0-9]|3[01])-(0[1-9]|1[012])-([0-9]{4})$", $str))
 		{
-			$this->form_validation->set_message('valid_date', 'Format tanggal tidak valid. dd-mm-yyyy');
+			$this->form_validation->set_message('valid_date', 'Date format not valid. dd-mm-yyyy');
 			return false;
 		}
 		else
@@ -294,7 +294,7 @@ class Attendance extends CI_Controller {
 		
 		if($this->Attendance_model->valid_entry($nis, $tanggal) == FALSE)
 		{
-			$this->form_validation->set_message('valid_entry', 'Siswa ini sudah tercatat absen pada tanggal ' . $this->input->post('tanggal'));
+			$this->form_validation->set_message('valid_entry', 'This student already registered in attendance database at ' . $this->input->post('tanggal'));
 			return FALSE;
 		}
 		else
@@ -320,7 +320,7 @@ class Attendance extends CI_Controller {
 		{
 			if($this->Attendance_model->valid_entry($nis, $new_date) === FALSE) // cek database untuk entry yang sama memakai valid_entry()
 			{
-				$this->form_validation->set_message('valid_entry2', 'Siswa ini sudah tercatat absen pada tanggal ' . $this->input->post('tanggal'));
+				$this->form_validation->set_message('valid_entry2', 'This student already registered in attendance database at ' . $this->input->post('tanggal'));
 				return FALSE;
 			}
 			else
