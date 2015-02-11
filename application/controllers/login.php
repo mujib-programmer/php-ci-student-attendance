@@ -47,7 +47,7 @@ class Login extends CI_Controller {
 			{
 				$data = array('username' => $username, 'login' => TRUE);
 				$this->session->set_userdata($data);
-				redirect('absen');
+				redirect('attendance');
 			}
 			else
 			{
