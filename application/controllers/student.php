@@ -8,7 +8,7 @@ class Student extends CI_Controller {
 	/**
 	 * Constructor, load Semester_model, Grade_model
 	 */
-	function Siswa()
+	function Student()
 	{
 		parent::__construct();
 		$this->load->model('Student_model', '', TRUE);
@@ -80,7 +80,7 @@ class Student extends CI_Controller {
 			
 			foreach ($student as $row)
 			{
-				$this->table->add_row(++$i, $row->nis, $row->nama, $row->kelas,
+				$this->table->add_row(++$i, $row->nis, $row->name, $row->grade,
 										anchor('student/update/'.$row->nis,'update',array('class' => 'update')).' '.
 										anchor('student/delete/'.$row->nis,'delete',array('class'=> 'delete','onclick'=>"return confirm('Are you sure you want to delete this data?')"))
 										);

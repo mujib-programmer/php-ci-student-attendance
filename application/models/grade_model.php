@@ -21,21 +21,21 @@ class Grade_model extends CI_Model {
 	 */
 	function get_kelas()
 	{
-		$this->db->order_by('id_kelas');
+		$this->db->order_by('id');
 		return $this->db->get(TABLE_GRADE);
 	}
 	
 	/**
 	 * Mendapatkan data sebuah kelas
 	 */
-	function get_kelas_by_id($id_kelas)
+	function get_grade_by_id($id)
 	{
-		return $this->db->get_where($this->table, array('id_kelas' => $id_kelas), 1)->row();
+		return $this->db->get_where($this->table, array('id' => $id), 1)->row();
 	}
 	
 	function get_all()
 	{
-		$this->db->order_by('id_kelas');
+		$this->db->order_by('id');
 		return $this->db->get($this->table);
 	}
 	
@@ -44,7 +44,7 @@ class Grade_model extends CI_Model {
 	 */
 	function delete($id_kelas)
 	{
-		$this->db->delete($this->table, array('id_kelas' => $id_kelas));
+		$this->db->delete($this->table, array('id' => $id_kelas));
 	}
 	
 	/**
@@ -60,7 +60,7 @@ class Grade_model extends CI_Model {
 	 */
 	function update($id_kelas, $kelas)
 	{
-		$this->db->where('id_kelas', $id_kelas);
+		$this->db->where('id', $id_kelas);
 		$this->db->update($this->table, $kelas);
 	}
 	
@@ -69,7 +69,7 @@ class Grade_model extends CI_Model {
 	 */
 	function valid_id($id_kelas)
 	{
-		$query = $this->db->get_where($this->table, array('id_kelas' => $id_kelas));
+		$query = $this->db->get_where($this->table, array('id' => $id_kelas));
 		if ($query->num_rows() > 0)
 		{
 			return TRUE;

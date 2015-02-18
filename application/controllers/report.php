@@ -57,7 +57,7 @@ class Report extends CI_Controller {
 		{		
 			foreach($kelas as $row)
 			{
-				$data['options_kelas'][$row->id_kelas] = $row->kelas;
+				$data['options_kelas'][$row->id] = $row->grade;
 			}
 		}
 		else

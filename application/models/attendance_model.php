@@ -29,12 +29,12 @@ class Attendance_model extends CI_Model {
 	 */
 	function get_last_ten_absen($limit, $offset)
 	{
-		$this->db->select(TABLE_ATTENDANCE .'.id_absen, '. TABLE_ATTENDANCE .'.tanggal, '. TABLE_ATTENDANCE.'.nis, '. TABLE_STUDENT .'.nama, '. TABLE_GRADE .'.kelas, '. TABLE_ATTENDANCE .'.absen');
+		$this->db->select(TABLE_ATTENDANCE .'.id, '. TABLE_ATTENDANCE .'.date, '. TABLE_ATTENDANCE.'.nis, '. TABLE_STUDENT .'.name, '. TABLE_GRADE .'.grade, '. TABLE_ATTENDANCE .'.attendance');
 		$this->db->from(TABLE_ATTENDANCE. ', '. TABLE_STUDENT .', '. TABLE_GRADE .', ' . TABLE_SEMESTER);
-		$this->db->where(TABLE_STUDENT.'.id_kelas = '. TABLE_GRADE .'.id_kelas');
+		$this->db->where(TABLE_STUDENT.'.id_grade = '. TABLE_GRADE .'.id');
 		$this->db->where(TABLE_ATTENDANCE .'.nis = '. TABLE_STUDENT .'.nis');
 		$this->db->where(TABLE_SEMESTER .'.id_semester = '. TABLE_ATTENDANCE .'.id_semester');
-		$this->db->order_by(TABLE_ATTENDANCE .'.tanggal', 'desc');
+		$this->db->order_by(TABLE_ATTENDANCE .'.date', 'desc');
 		$this->db->limit($limit, $offset);
 		return $this->db->get();
 	}
@@ -44,7 +44,7 @@ class Attendance_model extends CI_Model {
 	 */
 	function delete($id_absen)
 	{
-		$this->db->where('id_absen', $id_absen);
+		$this->db->where('id', $id_absen);
 		$this->db->delete($this->table);
 	}
 	
@@ -61,8 +61,8 @@ class Attendance_model extends CI_Model {
 	 */
 	function get_absen_by_id($id_absen)
 	{
-		$this->db->select('id_absen, nis, id_semester, tanggal, absen');
-		$this->db->where('id_absen', $id_absen);
+		$this->db->select('id, nis, id_semester, date, attendance');
+		$this->db->where('id', $id_absen);
 		return $this->db->get($this->table);
 	}
 	
@@ -71,7 +71,7 @@ class Attendance_model extends CI_Model {
 	 */
 	function update($id_absen, $absen)
 	{
-		$this->db->where('id_absen', $id_absen);
+		$this->db->where('id', $id_absen);
 		$this->db->update($this->table, $absen);
 	}
 	
@@ -81,7 +81,7 @@ class Attendance_model extends CI_Model {
 	function valid_entry($nis, $tanggal)
 	{
 		$this->db->where('nis', $nis);
-		$this->db->where('tanggal', $tanggal);
+		$this->db->where('date', $tanggal);
 		$query = $this->db->get($this->table)->num_rows();
 						
 		if($query > 0)

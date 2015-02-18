@@ -16,9 +16,9 @@ class Student_model extends CI_Model {
 	 */
 	function get_all($limit, $offset)
 	{
-		$this->db->select(TABLE_STUDENT.'.nis, '.TABLE_STUDENT.'.nama, '.TABLE_GRADE.'.kelas');
+		$this->db->select(TABLE_STUDENT.'.nis, '.TABLE_STUDENT.'.name, '.TABLE_GRADE.'.grade');
 		$this->db->from($this->table);
-		$this->db->join(TABLE_GRADE, TABLE_GRADE.'.id_kelas = '.TABLE_STUDENT.'.id_kelas');
+		$this->db->join(TABLE_GRADE, TABLE_GRADE.'.id = '.TABLE_STUDENT.'.id_grade');
 		$this->db->limit($limit, $offset);
 		$this->db->order_by('nis', 'asc');
 		return $this->db->get()->result();

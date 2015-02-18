@@ -66,9 +66,9 @@ class Grade extends CI_Controller {
 			
 			foreach ($grade as $row)
 			{
-				$this->table->add_row(++$i, $row->id_grade, $row->grade,
-										anchor('grade/update/'.$row->id_grade,'update',array('class' => 'update')).' '.
-										anchor('grade/delete/'.$row->id_grade,'delete',array('class'=> 'delete','onclick'=>"return confirm('Are you sure you want to delete this data?')"))
+				$this->table->add_row(++$i, $row->id, $row->grade,
+										anchor('grade/update/'.$row->id,'update',array('class' => 'update')).' '.
+										anchor('grade/delete/'.$row->id,'delete',array('class'=> 'delete','onclick'=>"return confirm('Are you sure you want to delete this data?')"))
 										);
 			}
 			$data['table'] = $this->table->generate();
@@ -163,10 +163,10 @@ class Grade extends CI_Controller {
 		$grade = $this->Grade_model->get_grade_by_id($id_grade);
 				
 		// buat session untuk menyimpan data primary key (id_grade)
-		$this->session->set_userdata('id_grade', $grade->id_grade);
+		$this->session->set_userdata('id_grade', $grade->id);
 		
 		// Data untuk mengisi field2 form
-		$data['default']['id_grade'] 	= $grade->id_grade;		
+		$data['default']['id_grade'] 	= $grade->id;		
 		$data['default']['grade']		= $grade->grade;
 				
 		$this->load->view('template', $data);

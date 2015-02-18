@@ -87,15 +87,15 @@ class Attendance extends CI_Controller {
 			{
 				// Konversi hari dan tanggal ke dalam format Indonesia
 				$hari_array = array('Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu');
-				$hr = date('w', strtotime($absen->tanggal));
+				$hr = date('w', strtotime($absen->date));
 				$hari = $hari_array[$hr];
-				$tgl = date('d-m-Y', strtotime($absen->tanggal));
+				$tgl = date('d-m-Y', strtotime($absen->date));
 				$hr_tgl = "$hari, $tgl";
 				
 				// Penyusunan data baris per baris, perhatikan pembuatan link untuk updat dan delete
-				$this->table->add_row(++$i, $hr_tgl, $absen->nis, $absen->nama, $absen->kelas, $absen->absen,
-										anchor('attendance/update/'.$absen->id_absen,'update',array('class' => 'update')).' '.
-										anchor('attendance/delete/'.$absen->id_absen,'delete',array('class'=> 'delete','onclick'=>"return confirm('Are you sure you want to delete this data?')"))
+				$this->table->add_row(++$i, $hr_tgl, $absen->nis, $absen->name, $absen->grade, $absen->attendance,
+										anchor('attendance/update/'.$absen->id,'update',array('class' => 'update')).' '.
+										anchor('attendance/delete/'.$absen->id,'delete',array('class'=> 'delete','onclick'=>"return confirm('Are you sure you want to delete this data?')"))
 									);
 			}
 			$data['table'] = $this->table->generate();
